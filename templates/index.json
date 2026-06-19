@@ -9,6 +9,25 @@
  */
 {
   "sections": {
+    "collection_cards_kick": {
+      "type": "custom-collection-cards",
+      "blocks": {
+        "card_1": { "type": "card", "settings": { "heading": "Explore New Tastes" } },
+        "card_2": { "type": "card", "settings": { "heading": "Best Sellers" } },
+        "card_3": { "type": "card", "settings": { "heading": "Honey & Cacao" } }
+      },
+      "block_order": ["card_1", "card_2", "card_3"],
+      "settings": {
+        "columns": 3,
+        "mobile_columns": "1",
+        "card_height": 260,
+        "cards_gap": 16,
+        "corner_radius": 16,
+        "overlay_opacity": 45,
+        "section_width": "page-width",
+        "color_scheme": "scheme-2"
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -1455,6 +1474,7 @@
     }
   },
   "order": [
+    "collection_cards_kick",
     "hero_jVaWmY",
     "product_list_fa6P9H",
     "section_irQYih",

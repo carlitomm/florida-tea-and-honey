@@ -1,0 +1,28 @@
+{% comment %}
+  custom-hero.liquid
+  ----------------------------------------------------------------------------
+  KICK-inspired hero: contain the (normally full-bleed) hero media to the page
+  width and give it rounded corners, so it reads as a contained card.
+  Keeps the existing content layout. No colors changed.
+
+  To revert: delete this file and its {% render %} call in sections/hero.liquid.
+{% endcomment %}
+<style>
+  /* Let the side gutters show the page background so the rounded card floats */
+  div.hero {
+    background-color: transparent;
+  }
+
+  .hero .hero__container {
+    width: min(var(--page-content-width), 100% - var(--page-margin) * 2);
+    margin-inline: auto;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero .hero__container {
+      border-radius: 16px;
+    }
+  }
+</style>

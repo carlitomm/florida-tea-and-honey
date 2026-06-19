@@ -1,0 +1,27 @@
+{% comment %}
+  custom-page-background.liquid
+  ----------------------------------------------------------------------------
+  Paint the whole page background with the SAME color as the header (color
+  scheme "scheme-2", the green) so the page reads as one continuous surface
+  with the contained sections (cards, hero) floating on it — KICK style.
+
+  The color is read from the theme's scheme-2 settings, NOT hard-coded: if you
+  change scheme-2's background in the Theme Editor, this follows automatically.
+
+  To revert: delete this file and its {% render %} call in layout/theme.liquid.
+{% endcomment %}
+{% liquid
+  assign page_bg = blank
+  for scheme in settings.color_schemes
+    if scheme.id == 'scheme-2'
+      assign page_bg = scheme.settings.background
+    endif
+  endfor
+%}
+{% if page_bg != blank %}
+  {% style %}
+    body {
+      background-color: rgb({{ page_bg.rgb }});
+    }
+  {% endstyle %}
+{% endif %}
