@@ -6,27 +6,28 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
       "blocks": {
-        "heading": {
+        "text_x9wAWw": {
           "type": "text",
-          "name": "Title",
+          "name": "t:names.heading",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h2>About Us</h2>",
             "width": "100%",
-            "max_width": "normal",
-            "alignment": "left",
+            "max_width": "none",
+            "alignment": "center",
             "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -36,27 +37,226 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "page-content": {
-          "type": "page-content",
-          "settings": {},
-          "blocks": {}
         }
       },
       "block_order": [
-        "heading",
-        "page-content"
+        "text_x9wAWw"
       ],
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "gap": 31,
         "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 80
+        "padding-block-start": 22,
+        "padding-block-end": 0
+      }
+    },
+    "section_4en6Tb": {
+      "type": "section",
+      "blocks": {
+        "group_JMEtYd": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "video_QHBwye": {
+              "type": "video",
+              "name": "t:names.video",
+              "settings": {
+                "source": "uploaded",
+                "video": "shopify://files/videos/Untitled design (1).mp4",
+                "video_url": "",
+                "video_autoplay": true,
+                "video_loop": true,
+                "alt": "",
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "auto",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 13,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "video_QHBwye"
+          ]
+        },
+        "group_CYgcEt": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_afQNe3": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<p>Rooted in Nature. Made by Local Hands.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_d3VXEU": {
+              "type": "text",
+              "name": "t:names.description",
+              "settings": {
+                "text": "<p>Florida Tea and Honey began with a simple belief: the best things are made slowly. We're not a factory, and we don't cut corners. Instead, we bring together a family of local makers whose honey, cacao, teas, and natural products we're proud to share with our community.</p><p><strong>The makers behind our shelves</strong></p><p><em>Alonso Apiaries</em>: A Florida family apiary producing raw honey straight from their own hives, along with infused honeys, pure beeswax candles, and handcrafted soaps. Their honey is never heavily processed or diluted, so every jar keeps its natural flavor and nutrients.</p><p><em>Camino del Corazón:</em> Ceremonial-grade cacao grown in the highlands of Guatemala and crafted the traditional way: slowly, patiently, and without shortcuts. Each blend is made to honor the heart of the cacao.</p><p><em>Keha Wellness:</em> A herbalist studio founded in 2021 on one idea: herbal medicine is people's medicine. Their organic teas and tinctures are blended to support digestion, rest, immunity, and everyday well-being.</p><p><strong>Why we do this</strong></p><p>When you shop with us, you're not just buying a product; you're supporting real local makers who pour care into every detail. From the first harvest to your cup, it's the real thing.</p><p><em>Explore our </em><a href=\"https://floridateaandhoney.com/collections/honey\"><em>honey</em></a><em>, </em><a href=\"https://floridateaandhoney.com/collections/cacao\"><em>cacao</em></a><em>, and </em><a href=\"https://floridateaandhoney.com/collections/teas\"><em>teas</em></a><em> — all crafted with care, close to home.</em></p>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_afQNe3",
+            "text_d3VXEU"
+          ]
+        }
+      },
+      "block_order": [
+        "group_JMEtYd",
+        "group_CYgcEt"
+      ],
+      "name": "t:names.multicolumn",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 15,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "section_4en6Tb"
   ]
 }
