@@ -1,0 +1,115 @@
+{% comment %}
+  custom-search.liquid
+  ----------------------------------------------------------------------------
+  Custom styling for the predictive search modal (KICK-inspired look).
+
+  What it does:
+    - Turns the search input bar into a rounded "pill" with a visible,
+      themed "Search" submit button on the right (desktop).
+    - Renders product results as a VERTICAL LIST of rows (square thumbnail on
+      the left, title + price on the right) instead of the default card grid.
+
+  Design notes:
+    - Colors are NOT hard-coded. The Search button uses the theme's .button
+      style and all fills/borders derive from theme color variables, so they
+      adapt to whatever color scheme is configured in the theme editor.
+    - The vertical-list rules are scoped to .predictive-search-results__card--product
+      so the shared resource-card component is untouched elsewhere on the site.
+
+  To revert: delete this file, remove its {% render %} call in
+  snippets/search-modal.liquid, and remove the custom submit button markup
+  added there.
+{% endcomment %}
+<style>
+  /* ---------- Pill input + visible Search button (desktop) ---------- */
+  @media screen and (min-width: 750px) {
+    .predictive-search-form__header {
+      border: none;
+      background: transparent;
+    }
+
+    .predictive-search-form__header-inner {
+      border-radius: 999px;
+      padding-inline-end: 0.4rem;
+      gap: var(--padding-xs);
+    }
+
+    /* Let the input share the row with the submit button, slimmer bar */
+    .predictive-search-form__header-inner input.search-input {
+      flex: 1 1 auto;
+      width: auto;
+      min-width: 0;
+      padding-block: 0.7rem;
+    }
+
+    /* Compact button that floats inside the bar (shorter than the bar) */
+    .predictive-search__submit-button {
+      flex: 0 0 auto;
+      align-self: center;
+      min-height: 0;
+      height: auto;
+      padding-block: 0.45rem;
+      padding-inline: var(--padding-lg);
+      border-radius: 999px;
+      font-size: var(--font-size--sm);
+      line-height: 1;
+      white-space: nowrap;
+    }
+  }
+
+  /* Hide the submit button on mobile (the input collapses to full width) */
+  @media screen and (max-width: 749px) {
+    .predictive-search__submit-button {
+      display: none;
+    }
+  }
+
+  /* ---------- Product results as a vertical list of rows ---------- */
+  .predictive-search-results__wrapper-products {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .predictive-search-results__card--product {
+    flex: 0 0 auto;
+    padding-block: var(--padding-sm);
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+  }
+
+  .predictive-search-results__card--product:last-child {
+    border-block-end: none;
+  }
+
+  /* Switch the shared resource-card to a horizontal row, scoped to search */
+  .predictive-search-results__card--product .resource-card {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--padding-md);
+    height: auto;
+  }
+
+  .predictive-search-results__card--product .resource-card__media {
+    flex: 0 0 4.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .predictive-search-results__card--product .resource-card__image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* No hover image swap on the small thumbnail (it broke out of the row) */
+  .predictive-search-results__card--product .resource-card__image--secondary {
+    display: none;
+  }
+
+  .predictive-search-results__card--product .resource-card__content {
+    flex: 1 1 auto;
+  }
+</style>

@@ -1,0 +1,69 @@
+{% comment %}
+  custom-header-pill.liquid
+  ----------------------------------------------------------------------------
+  Custom header styling for Florida Tea and Honey (KICK-inspired look).
+
+  What it does (desktop only, >= 750px):
+    - Wraps the centered nav menu + search in a rounded "pill" capsule.
+    - Adds a thin vertical divider between the menu and the search icon.
+    - Turns the right-hand action icons (account, cart) into circular buttons.
+
+  Design notes:
+    - Colors are NOT hard-coded. All fills/borders derive from the theme's
+      own --color-foreground-rgb at low opacity, so they adapt to whatever
+      color scheme is configured in the theme editor.
+    - The search icon lands in the center column because search_position is set
+      to "center" in sections/header-group.json (the header-row snippet honors
+      a "center" value even though the admin dropdown only lists left/right).
+
+  To revert: delete this file and remove its {% render %} call in
+  sections/header.liquid, then set search_position back to "right".
+{% endcomment %}
+<style>
+  @media screen and (min-width: 750px) {
+    /* --- Center nav pill: wraps menu + search --- */
+    .header__column--center {
+      --pill-border: rgb(var(--color-foreground-rgb) / 0.28);
+      --pill-bg: rgb(var(--color-foreground-rgb) / 0.12);
+      display: flex;
+      align-items: center;
+      gap: var(--gap-lg, 1.25rem);
+      padding-block: 0.55rem;
+      padding-inline: 1.75rem;
+      border: 1px solid var(--pill-border);
+      border-radius: 999px;
+      background: var(--pill-bg);
+    }
+
+    /* Thin vertical divider before the search icon, inside the pill */
+    .header__column--center .search-action {
+      margin-inline-start: 0.25rem;
+      padding-inline-start: 1.25rem;
+      border-inline-start: 1px solid var(--pill-border);
+    }
+
+    /* --- Right-side circular icon buttons (account + cart) --- */
+    .header__column--right .header-actions__action:not(.localization-selector) {
+      inline-size: 2.75rem;
+      block-size: 2.75rem;
+      border: 1px solid rgb(var(--color-foreground-rgb) / 0.18);
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .header__column--right .header-actions__action:not(.localization-selector):hover {
+      background: rgb(var(--color-foreground-rgb) / 0.08);
+      border-color: rgb(var(--color-foreground-rgb) / 0.3);
+    }
+  }
+
+  /* On mobile the menu collapses to a drawer; keep the native layout and let
+     the theme's drawer search handle search instead of the centered icon. */
+  @media screen and (max-width: 749px) {
+    .header__column--center .search-action {
+      display: none;
+    }
+  }
+</style>

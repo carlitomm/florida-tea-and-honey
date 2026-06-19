@@ -43,6 +43,7 @@
       role="search"
       aria-label="{{ 'content.search_input_label' | t }}"
     >
+      {% render 'custom-search' %}
       <form
         action="{{ routes.search_url }}"
         method="get"
@@ -94,6 +95,13 @@
               on:click="/resetSearch"
             >
               {{ 'actions.clear' | t }}
+            </button>
+            {%- comment -%} Custom: visible submit "Search" button inside the pill {%- endcomment -%}
+            <button
+              type="submit"
+              class="button predictive-search__submit-button"
+            >
+              {{ 'content.search_input_label' | t }}
             </button>
           </div>
           <button
