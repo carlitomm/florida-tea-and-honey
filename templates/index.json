@@ -236,13 +236,56 @@
     "featured_bento_kick": {
       "type": "custom-featured-bento",
       "blocks": {
-        "b1": { "type": "card", "settings": { "heading": "Sets", "subheading": "Handpicked combos to sample your favorites." } },
-        "b2": { "type": "card", "settings": { "heading": "Honey" } },
-        "b3": { "type": "card", "settings": { "heading": "Cacao" } },
-        "b4": { "type": "card", "settings": { "heading": "Teas", "subheading": "Organic loose leaf, crafted by locals." } }
+        "b1": {
+          "type": "card",
+          "settings": {
+            "product": "anxiety-away-motherwort-tincture-organic-calming-herbal-extract",
+            "image": "shopify://shop_images/lavender-buds.webp",
+            "heading": "Sets",
+            "subheading": "Handpicked combos to sample your favorites.",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "product": "avas-blend",
+            "heading": "Honey",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        },
+        "b3": {
+          "type": "card",
+          "settings": {
+            "product": "",
+            "heading": "Cacao",
+            "subheading": "",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        },
+        "b4": {
+          "type": "card",
+          "settings": {
+            "product": "",
+            "heading": "Teas",
+            "subheading": "Organic loose leaf, crafted by locals.",
+            "button_label": "Shop Now",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4"],
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
       "settings": {
+        "heading": "",
         "row_height": 240,
         "cards_gap": 16,
         "corner_radius": 16,
