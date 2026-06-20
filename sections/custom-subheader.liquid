@@ -73,10 +73,16 @@
     </div>
 
     <nav class="custom-subheader__side custom-subheader__side--end" aria-label="Secondary">
-      {%- if section.settings.about_link != blank -%}
-        <a href="{{ section.settings.about_link }}" class="custom-subheader__link">
-          {{- section.settings.about_label | default: 'About Us' -}}
-        </a>
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a
+            href="{{ link.url }}"
+            class="custom-subheader__link{% if link.active or link.child_active %} custom-subheader__link--active{% endif %}"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        {%- endfor -%}
       {%- endif -%}
     </nav>
   </div>
@@ -114,7 +120,8 @@
     transition: opacity 0.15s ease;
   }
 
-  .custom-subheader__link:hover {
+  .custom-subheader__link:hover,
+  .custom-subheader__link--active {
     opacity: 1;
     text-decoration: underline;
     text-underline-offset: 0.2em;
@@ -281,18 +288,14 @@
     },
     {
       "type": "header",
-      "content": "About link"
+      "content": "Links"
     },
     {
-      "type": "text",
-      "id": "about_label",
-      "label": "Label",
-      "default": "About Us"
-    },
-    {
-      "type": "url",
-      "id": "about_link",
-      "label": "Link"
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Manage these links in Online Store → Navigation, like the header menu. Create a dedicated menu (e.g. 'Top bar') and select it here."
     }
   ]
 }
