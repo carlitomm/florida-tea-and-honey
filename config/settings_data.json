@@ -11,7 +11,7 @@
   "current": {
     "logo": "shopify://shop_images/Florida_Tea_and_Honey.png",
     "logo_inverse": "shopify://shop_images/Florida_Tea_and_Honey.png",
-    "logo_height": 63,
+    "logo_height": 100,
     "logo_height_mobile": 28,
     "favicon": "shopify://shop_images/Florida_Tea_and_Honey.png",
     "type_body_font": "assistant_n4",
@@ -287,7 +287,7 @@
           "border": "#e6e6e6",
           "shadow": "#000000",
           "primary_button_background": "#956535",
-          "primary_button_text": "#FFFFFF",
+          "primary_button_text": "#ffffff",
           "primary_button_border": "#ffffff",
           "primary_button_hover_background": "#000000",
           "primary_button_hover_text": "#ffffff",
