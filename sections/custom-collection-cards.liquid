@@ -74,6 +74,21 @@
       </a>
     {% endfor %}
   </div>
+
+  {% if section.blocks.size > 1 %}
+    {% comment %} Mobile-only pagination dots (hidden on desktop via CSS). {% endcomment %}
+    <div class="collection-cards__dots" role="tablist" aria-label="Collection slides">
+      {% for block in section.blocks %}
+        <button
+          type="button"
+          class="collection-cards__dot{% if forloop.first %} is-active{% endif %}"
+          data-index="{{ forloop.index0 }}"
+          aria-label="Go to slide {{ forloop.index }}"
+          {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}
+        ></button>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -153,16 +168,108 @@
     font-size: var(--font-size--sm, 0.875rem);
   }
 
+  /* Dots are mobile-only; hidden on desktop. */
+  .collection-cards__dots {
+    display: none;
+  }
+
   @media screen and (max-width: 749px) {
+    /* Turn the grid into a swipeable, snapping horizontal carousel. */
     .collection-cards {
-      grid-template-columns: repeat(var(--cards-mobile-columns, 1), 1fr);
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scroll-padding-inline: var(--page-margin, 1rem);
+      padding-block-end: 4px;
+      /* Hide scrollbar (Firefox / IE) — WebKit handled below. */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .collection-cards::-webkit-scrollbar {
+      display: none;
     }
 
     .collection-cards__card {
-      height: calc(var(--cards-height, 360px) * 0.8);
+      flex: 0 0 82%;
+      height: calc(var(--cards-height, 360px) * 0.9);
+      scroll-snap-align: center;
+    }
+
+    /* Pagination dots */
+    .collection-cards__dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-block-start: 0.9rem;
+    }
+
+    .collection-cards__dot {
+      inline-size: 8px;
+      block-size: 8px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgb(var(--color-foreground-rgb) / 0.3);
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .collection-cards__dot.is-active {
+      background: rgb(var(--color-foreground-rgb) / 0.9);
+      transform: scale(1.25);
     }
   }
 {% endstylesheet %}
+
+<script>
+  (function () {
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+    var track = section.querySelector('.collection-cards');
+    var dotsWrap = section.querySelector('.collection-cards__dots');
+    if (!track || !dotsWrap) return;
+    var cards = Array.prototype.slice.call(track.querySelectorAll('.collection-cards__card'));
+    var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.collection-cards__dot'));
+    if (cards.length < 2 || dots.length !== cards.length) return;
+
+    function setActive(i) {
+      dots.forEach(function (d, idx) {
+        var on = idx === i;
+        d.classList.toggle('is-active', on);
+        d.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    // Tap a dot -> snap to that card.
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
+
+    // Track the centered card while swiping and light up its dot.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+              var idx = cards.indexOf(entry.target);
+              if (idx > -1) setActive(idx);
+            }
+          });
+        },
+        { root: track, threshold: [0.6] }
+      );
+      cards.forEach(function (c) {
+        io.observe(c);
+      });
+    }
+  })();
+</script>
 
 {% schema %}
 {
