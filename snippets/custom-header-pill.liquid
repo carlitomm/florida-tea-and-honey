@@ -20,11 +20,13 @@
   sections/header.liquid, then set search_position back to "right".
 {% endcomment %}
 <style>
-  /* Compact header: cap the logo height so the header keeps a small max height
-     (the logo was driving the row to ~120px). Applies on all viewports. */
+  /* Logo size: capped so it does not drive the row to ~120px, but kept large
+     enough to read well. The center pill keeps its own compact height via its
+     padding (below), so a bigger logo only grows the header a little.
+     Applies on all viewports. */
   .header-logo,
   .header-logo__image {
-    max-height: 56px;
+    max-height: 80px;
     width: auto;
   }
 
@@ -35,6 +37,9 @@
       --pill-bg: rgb(var(--color-foreground-rgb) / 0.12);
       display: flex;
       align-items: center;
+      /* Keep the pill at its own compact height: don't stretch to match a
+         taller logo. The logo can grow without the pill growing with it. */
+      align-self: center;
       gap: var(--gap-lg, 1.25rem);
       padding-block: 0.55rem;
       padding-inline: 1.75rem;
