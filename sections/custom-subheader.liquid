@@ -1,0 +1,160 @@
+{% comment %}
+  custom-subheader.liquid
+  ----------------------------------------------------------------------------
+  Thin utility strip that sits BETWEEN the announcement bar and the main header
+  (KICK-inspired). Holds the native Shopify language selector on the left and an
+  "About Us" link on the right.
+
+  Notes:
+    - The language selector is Shopify's NATIVE localization form
+      (`snippets/localization-form.liquid`, `show_language: true`). We do not
+      reinvent it — it lists `localization.available_languages` and submits the
+      built-in `localization` form. Requires the languages to be published in
+      Shopify admin (Settings → Languages / Translate & Adapt).
+    - Colors come from the chosen theme Color scheme, never hard-coded.
+
+  Placement: added to `sections/header-group.json` order, between
+  `header_announcements_*` and `header_section`.
+
+  To revert: remove this section's id from header-group.json `order` (and its
+  entry under `sections`), then delete this file.
+{% endcomment %}
+
+{%- liquid
+  assign show_language = false
+  if localization.available_languages.size > 1
+    assign show_language = true
+  endif
+-%}
+
+<div class="custom-subheader color-{{ section.settings.color_scheme }}">
+  <div class="custom-subheader__inner">
+    <div class="custom-subheader__side custom-subheader__side--start">
+      {%- if show_language -%}
+        <div class="custom-subheader__lang">
+          {% render 'localization-form',
+            show_country: false,
+            show_language: true,
+            localization_style: 'subheader',
+            form_id: section.id
+          %}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <nav class="custom-subheader__side custom-subheader__side--end" aria-label="Secondary">
+      {%- if section.settings.about_link != blank -%}
+        <a href="{{ section.settings.about_link }}" class="custom-subheader__link">
+          {{- section.settings.about_label | default: 'About Us' -}}
+        </a>
+      {%- endif -%}
+    </nav>
+  </div>
+</div>
+
+{% stylesheet %}
+  .custom-subheader {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .custom-subheader__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-md, 1rem);
+    width: min(var(--page-width), 100% - var(--page-margin) * 2);
+    margin-inline: auto;
+    min-height: 38px;
+    padding-block: 0.25rem;
+  }
+
+  .custom-subheader__side {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md, 1rem);
+  }
+
+  .custom-subheader__link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    font-size: var(--font-size-sm, 0.9rem);
+    letter-spacing: 0.02em;
+    opacity: 0.92;
+    transition: opacity 0.15s ease;
+  }
+
+  .custom-subheader__link:hover {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Compact the native language selector to fit a thin strip */
+  .custom-subheader .language-selector {
+    padding: 0;
+    width: auto;
+    gap: var(--gap-2xs, 0.25rem);
+  }
+
+  .custom-subheader .localization-form__select {
+    background-color: transparent;
+    color: var(--color-foreground);
+    font-size: var(--font-size-sm, 0.9rem);
+    padding-block: 0.15rem;
+    padding-inline: 0.15rem calc(var(--icon-size-xs) + 0.35rem);
+    text-align: start;
+    max-width: none;
+  }
+
+  .custom-subheader .localization-form__select option {
+    color: var(--color-input-text);
+    background-color: var(--color-background);
+  }
+
+  .custom-subheader .language-selector .svg-wrapper.icon-caret {
+    right: 0;
+    color: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-subheader__inner {
+      min-height: 34px;
+    }
+
+    .custom-subheader__link,
+    .custom-subheader .localization-form__select {
+      font-size: var(--font-size-xs, 0.8rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Subheader strip",
+  "class": "custom-subheader-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "About link"
+    },
+    {
+      "type": "text",
+      "id": "about_label",
+      "label": "Label",
+      "default": "About Us"
+    },
+    {
+      "type": "url",
+      "id": "about_link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

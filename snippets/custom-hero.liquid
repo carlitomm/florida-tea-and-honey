@@ -3,16 +3,18 @@
   ----------------------------------------------------------------------------
   KICK-inspired hero: contain the (normally full-bleed) hero media to the page
   width and give it rounded corners, so it reads as a contained card.
-  Keeps the existing content layout. No colors changed.
+  Keeps the existing content layout.
+
+  Background: the band/gutters behind the rounded card now follow the hero
+  section's own "Color scheme" setting (editable in the Theme Editor). We no
+  longer force it transparent — that override hid the color-scheme background
+  and made the hero background look non-editable.
 
   To revert: delete this file and its {% render %} call in sections/hero.liquid.
 {% endcomment %}
 <style>
-  /* Let the side gutters show the page background so the rounded card floats */
-  div.hero {
-    background-color: transparent;
-  }
-
+  /* Background comes from the section's Color scheme (editable in the admin).
+     The rounded card floats on top of whatever background color is chosen. */
   .hero .hero__container {
     width: min(var(--page-content-width), 100% - var(--page-margin) * 2);
     margin-inline: auto;

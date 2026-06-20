@@ -47,6 +47,14 @@
         "padding-block-end": 15
       }
     },
+    "custom_subheader_strip": {
+      "type": "custom-subheader",
+      "settings": {
+        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
+        "about_label": "About Us",
+        "about_link": "/pages/about-us"
+      }
+    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -91,9 +99,9 @@
         "show_search": true,
         "search_position": "center",
         "search_row": "top",
-        "show_country": true,
+        "show_country": false,
         "country_selector_style": false,
-        "show_language": true,
+        "show_language": false,
         "localization_font": "heading",
         "localization_font_size": "0.875rem",
         "localization_position": "right",
@@ -122,6 +130,7 @@
   },
   "order": [
     "header_announcements_9jGBFp",
+    "custom_subheader_strip",
     "header_section"
   ]
 }
