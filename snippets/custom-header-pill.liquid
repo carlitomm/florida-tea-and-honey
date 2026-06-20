@@ -42,6 +42,11 @@
       border-inline-start: 1px solid var(--pill-border);
     }
 
+    /* Separate the account + cart buttons (their flex container has no gap) */
+    .header__column--right > *:has(> .header-actions__action) {
+      gap: 0.65rem;
+    }
+
     /* --- Right-side circular icon buttons (account + cart) --- */
     .header__column--right .header-actions__action:not(.localization-selector) {
       inline-size: 2.75rem;
