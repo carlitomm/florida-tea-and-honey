@@ -57,7 +57,7 @@
               "type": "logo",
               "name": "t:names.logo",
               "settings": {
-                "inverse": false,
+                "inverse": true,
                 "font": "heading",
                 "unit": "pixel",
                 "percent_width": 100,
@@ -217,7 +217,7 @@
         "section_width": "page-width",
         "gap": 21,
         "divider_thickness": 0,
-        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
+        "color_scheme": "scheme-2b9f4e1a-7c3d-4f80-9a16-0d5e8c1f2a30",
         "padding-block-start": 16,
         "padding-block-end": 11
       }

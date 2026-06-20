@@ -49,14 +49,14 @@
         "heading": "",
         "columns": 3,
         "mobile_columns": "1",
-        "card_height": 260,
+        "card_height": 200,
         "cards_gap": 16,
         "corner_radius": 16,
         "overlay_opacity": 45,
         "section_width": "page-width",
-        "color_scheme": "scheme-2",
-        "padding-block-start": 40,
-        "padding-block-end": 40
+        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
+        "padding-block-start": 20,
+        "padding-block-end": 20
       }
     },
     "hero_jVaWmY": {
@@ -92,7 +92,7 @@
           "type": "logo",
           "name": "t:names.logo",
           "settings": {
-            "inverse": false,
+            "inverse": true,
             "font": "heading",
             "unit": "pixel",
             "percent_width": 100,
@@ -112,9 +112,9 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Discover organic <strong>honey, cacao, teas</strong>, and natural products crafted with care while supporting small businesses in our community.</p>",
+            "text": "<p>Discover organic <a href=\"/collections/honey\" title=\"Honey\"><strong>honey</strong></a><strong>, </strong><a href=\"/collections/cacao\" title=\"Cacao\"><strong>cacao</strong></a><strong>, </strong><a href=\"/collections/teas\" title=\"Teas\"><strong>teas</strong></a>, and natural products crafted with care while supporting small businesses in our community.</p>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "h3",
             "font": "var(--font-body--family)",
@@ -228,7 +228,7 @@
         "item_gap": 48,
         "text_size": 16,
         "section_width": "page-width",
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
         "padding-block-start": 16,
         "padding-block-end": 16
       }
