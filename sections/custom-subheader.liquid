@@ -27,9 +27,16 @@
   if localization.available_languages.size > 1
     assign show_language = true
   endif
+
+  # Optional gradient built from the chosen scheme's own colors (background ->
+  # primary accent), so it stays editable via the color scheme — not hard-coded.
+  assign bg_style = ''
+  if section.settings.background_style == 'gradient'
+    assign bg_style = 'background-image: linear-gradient(' | append: section.settings.gradient_direction | append: ', var(--color-background), var(--color-primary));'
+  endif
 -%}
 
-<div class="custom-subheader color-{{ section.settings.color_scheme }}">
+<div class="custom-subheader color-{{ section.settings.color_scheme }}" style="{{ bg_style }}">
   <div class="custom-subheader__inner">
     <div class="custom-subheader__side custom-subheader__side--start">
       {%- if show_language -%}
@@ -116,6 +123,7 @@
     text-decoration: none;
     font-size: var(--font-size-sm, 0.9rem);
     letter-spacing: 0.02em;
+    white-space: nowrap;
     opacity: 0.92;
     transition: opacity 0.15s ease;
   }
@@ -285,6 +293,30 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-2"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        { "value": "solid", "label": "Solid (scheme background)" },
+        { "value": "gradient", "label": "Gradient (background → accent)" }
+      ],
+      "default": "solid",
+      "info": "Gradient blends the scheme's background color into its accent (primary) color. Both come from the Color scheme above."
+    },
+    {
+      "type": "select",
+      "id": "gradient_direction",
+      "label": "Gradient direction",
+      "options": [
+        { "value": "to right", "label": "Left → right" },
+        { "value": "to left", "label": "Right → left" },
+        { "value": "135deg", "label": "Diagonal" },
+        { "value": "to bottom", "label": "Top → bottom" }
+      ],
+      "default": "to right",
+      "visible_if": "{{ section.settings.background_style == 'gradient' }}"
     },
     {
       "type": "header",
