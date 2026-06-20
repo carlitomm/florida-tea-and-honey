@@ -51,7 +51,7 @@
       "type": "custom-subheader",
       "settings": {
         "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
-        "background_style": "gradient",
+        "background_style": "solid",
         "gradient_direction": "to top",
         "menu": "main-menu"
       }
