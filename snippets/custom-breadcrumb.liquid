@@ -1,0 +1,88 @@
+{% comment %}
+  custom-breadcrumb.liquid
+  ----------------------------------------------------------------------------
+  Simple breadcrumb for the product page: Home / <collection> / <product>.
+
+  The middle crumb prefers the collection the product was reached through
+  (Shopify sets `collection` when navigating from a collection), then falls
+  back to the product's first collection, otherwise it's omitted.
+
+  Colors follow the theme color scheme (no hard-coded brand colors).
+
+  To revert: delete this file and its {% render %} call in
+  snippets/product-information-content.liquid.
+{% endcomment %}
+
+{% liquid
+  assign crumb_collection = collection
+  if crumb_collection == blank and product.collections.size > 0
+    assign crumb_collection = product.collections.first
+  endif
+%}
+
+<nav class="custom-breadcrumb" aria-label="Breadcrumb">
+  <ol class="custom-breadcrumb__list">
+    <li class="custom-breadcrumb__item">
+      <a class="custom-breadcrumb__link" href="{{ routes.root_url }}">Home</a>
+    </li>
+    {% if crumb_collection != blank %}
+      <li class="custom-breadcrumb__item" aria-hidden="true">
+        <span class="custom-breadcrumb__sep">/</span>
+      </li>
+      <li class="custom-breadcrumb__item">
+        <a class="custom-breadcrumb__link" href="{{ crumb_collection.url }}">
+          {{- crumb_collection.title -}}
+        </a>
+      </li>
+    {% endif %}
+    <li class="custom-breadcrumb__item" aria-hidden="true">
+      <span class="custom-breadcrumb__sep">/</span>
+    </li>
+    <li class="custom-breadcrumb__item">
+      <span class="custom-breadcrumb__current" aria-current="page">{{ product.title }}</span>
+    </li>
+  </ol>
+</nav>
+
+{% style %}
+  .custom-breadcrumb {
+    margin-block-end: 1.25rem;
+  }
+
+  .custom-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+  }
+
+  .custom-breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .custom-breadcrumb__link {
+    color: rgb(var(--color-foreground-rgb) / 0.65);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .custom-breadcrumb__link:hover {
+    color: rgb(var(--color-foreground-rgb));
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .custom-breadcrumb__sep {
+    color: rgb(var(--color-foreground-rgb) / 0.4);
+  }
+
+  .custom-breadcrumb__current {
+    color: rgb(var(--color-foreground-rgb));
+    font-weight: 600;
+  }
+{% endstyle %}
