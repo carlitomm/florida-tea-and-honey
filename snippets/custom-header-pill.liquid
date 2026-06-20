@@ -20,6 +20,14 @@
   sections/header.liquid, then set search_position back to "right".
 {% endcomment %}
 <style>
+  /* Compact header: cap the logo height so the header keeps a small max height
+     (the logo was driving the row to ~120px). Applies on all viewports. */
+  .header-logo,
+  .header-logo__image {
+    max-height: 56px;
+    width: auto;
+  }
+
   @media screen and (min-width: 750px) {
     /* --- Center nav pill: wraps menu + search --- */
     .header__column--center {
