@@ -50,6 +50,11 @@
       align-self: start;
       justify-content: flex-start;
     }
+
+    /* Remove the 24px top padding so the box's top edge is flush with the image top. */
+    .product-information__grid--half .product-details > .group-block {
+      padding-block-start: 0 !important;
+    }
   }
 
   /* Selected variant swatch/option uses the accent color (not black). */
