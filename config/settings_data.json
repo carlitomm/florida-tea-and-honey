@@ -13,6 +13,7 @@
     "logo_inverse": "shopify://shop_images/Florida_Tea_and_Honey.png",
     "logo_height": 100,
     "logo_height_mobile": 28,
+    "pill_submenu_menu": "main-menu",
     "favicon": "shopify://shop_images/Florida_Tea_and_Honey.png",
     "type_body_font": "assistant_n4",
     "type_subheading_font": "assistant_n4",

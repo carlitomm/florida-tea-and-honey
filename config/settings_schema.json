@@ -2284,5 +2284,20 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Header submenu",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Adds a menu (☰) button on the left of the header pill that opens a dropdown panel. Manage its links in Online Store → Navigation (use parent links with child links for columns)."
+      },
+      {
+        "type": "link_list",
+        "id": "pill_submenu_menu",
+        "label": "Submenu menu",
+        "info": "Pick a navigation menu. Leave empty to hide the button."
+      }
+    ]
   }
 ]
