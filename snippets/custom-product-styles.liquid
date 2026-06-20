@@ -1,0 +1,44 @@
+{% comment %}
+  custom-product-styles.liquid
+  ----------------------------------------------------------------------------
+  Product-page tweaks for Florida Tea and Honey:
+    1. Desktop media/details split changed from 50/50 to 40/60 (smaller image,
+       more room for the text) — overrides the theme's "equal columns" grid.
+    2. The price block is enclosed in a soft rounded box (below the title) and
+       the price is enlarged, KICK-style.
+
+  Colors are theme-driven (foreground/background at low opacity), no hard-coded
+  brand colors. To revert: delete this file and its {% render %} call in
+  snippets/product-information-content.liquid.
+{% endcomment %}
+{% style %}
+  @media screen and (min-width: 750px) {
+    /* 40% media / 60% details (was 50/50 via --half). */
+    .product-information__grid--half {
+      grid-template-columns:
+        var(--full-page-grid-margin)
+        calc(var(--full-page-grid-central-column-width) * 0.4)
+        calc(var(--full-page-grid-central-column-width) * 0.6)
+        var(--full-page-grid-margin) !important;
+    }
+  }
+
+  /* Price enclosed in a box, just below the title. */
+  .product-details .group-block-content > .group-block:has(.price) {
+    background: rgb(var(--color-foreground-rgb) / 0.045);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+    border-radius: 16px;
+    padding: 1.1rem 1.35rem;
+  }
+
+  /* Bigger price. */
+  .product-details .group-block:has(.price) .price {
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .product-details .group-block:has(.price) .compare-at-price {
+    font-size: 0.55em;
+  }
+{% endstyle %}
