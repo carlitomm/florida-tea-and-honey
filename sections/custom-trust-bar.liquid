@@ -1,0 +1,357 @@
+{% comment %}
+  custom-trust-bar.liquid
+  ----------------------------------------------------------------------------
+  KICK-inspired social-proof bar. Sits directly under the hero on the same
+  green scheme so the two read as one continuous green zone.
+
+  Two parts:
+    - Left (fixed): "Trusted by 24k Customers" — the lead label uses the
+      scheme foreground color, the highlighted count is an accent-colored link.
+    - Right (marquee): an auto-scrolling, infinitely-looping row of customer
+      testimonials (quote + author). Pauses on hover. Edges fade out via a CSS
+      mask. Honors prefers-reduced-motion (falls back to a static scrollable
+      row, no animation).
+
+  Colors are NOT hard-coded: everything follows the chosen theme color scheme
+  (foreground / foreground-muted / primary), so changing the scheme in the
+  Theme Editor restyles this automatically.
+
+  Content is fully editable in the Theme Editor:
+    - Each testimonial is a block (add / remove / reorder)
+    - Section: lead label, highlight text + link, speed, sizes, gap, padding
+
+  To revert: delete this file and its entry in templates/index.json.
+{% endcomment %}
+
+{% liquid
+  assign speed = section.settings.scroll_speed | default: 40
+  assign gap = section.settings.item_gap | default: 48
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="trust-bar-{{ section.id }}"
+>
+  <div
+    class="trust-bar"
+    style="
+      --trust-gap: {{ gap }}px;
+      --trust-speed: {{ speed }}s;
+      --trust-font: {{ section.settings.text_size }}px;
+    "
+  >
+    {% if section.settings.lead_label != blank %}
+      <div class="trust-bar__lead">
+        <span class="trust-bar__lead-text">{{ section.settings.lead_label }}</span>
+        {% if section.settings.highlight_text != blank %}
+          {% if section.settings.highlight_link != blank %}
+            <a class="trust-bar__highlight" href="{{ section.settings.highlight_link }}">
+              {{- section.settings.highlight_text -}}
+            </a>
+          {% else %}
+            <span class="trust-bar__highlight">{{ section.settings.highlight_text }}</span>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="trust-bar__viewport">
+        {% comment %} Track is duplicated so the -50% loop is seamless. {% endcomment %}
+        <div class="trust-bar__track">
+          {% for pass in (1..2) %}
+            <ul
+              class="trust-bar__list"
+              {% if pass == 2 %}aria-hidden="true"{% endif %}
+            >
+              {% for block in section.blocks %}
+                <li class="trust-bar__item" {{ block.shopify_attributes }}>
+                  {% if block.settings.quote != blank %}
+                    <span class="trust-bar__quote">{{ block.settings.quote }}</span>
+                  {% endif %}
+                  {% if block.settings.author != blank %}
+                    <span class="trust-bar__author">{{ block.settings.author }}</span>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% style %}
+  #shopify-section-{{ section.id }} .trust-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--trust-gap);
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__lead {
+    flex: 0 0 auto;
+    font-size: var(--trust-font);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__lead-text {
+    color: rgb(var(--color-foreground-rgb));
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__highlight {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  a.trust-bar__highlight:hover {
+    color: var(--color-primary-hover, var(--color-primary));
+  }
+
+  /* Viewport clips the overflow and fades both edges. */
+  #shopify-section-{{ section.id }} .trust-bar__viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__track {
+    display: flex;
+    width: max-content;
+    animation: trust-scroll-{{ section.id }} var(--trust-speed) linear infinite;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__viewport:hover .trust-bar__track {
+    animation-play-state: paused;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__list {
+    display: flex;
+    align-items: center;
+    gap: var(--trust-gap);
+    margin: 0;
+    padding: 0 calc(var(--trust-gap) / 2) 0 0;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    font-size: var(--trust-font);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__quote {
+    color: rgb(var(--color-foreground-rgb));
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .trust-bar__author {
+    color: var(--color-foreground-muted, rgba(var(--color-foreground-rgb), 0.6));
+    font-weight: 400;
+  }
+
+  @keyframes trust-scroll-{{ section.id }} {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Two identical halves → -50% lands exactly on the seam. */
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Accessibility: no motion. The viewport becomes a manual scroll area. */
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .trust-bar__viewport {
+      overflow-x: auto;
+    }
+    #shopify-section-{{ section.id }} .trust-bar__track {
+      animation: none;
+    }
+    /* Hide the duplicate pass so content isn't read twice by AT/visually. */
+    #shopify-section-{{ section.id }} .trust-bar__list[aria-hidden='true'] {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .trust-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    #shopify-section-{{ section.id }} .trust-bar__viewport {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Lead label"
+    },
+    {
+      "type": "text",
+      "id": "lead_label",
+      "label": "Lead text",
+      "default": "Trusted by"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlighted text",
+      "default": "24k Customers"
+    },
+    {
+      "type": "url",
+      "id": "highlight_link",
+      "label": "Highlight link (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Marquee"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll duration (lower = faster)",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Gap between items",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Quote",
+          "default": "One shot, all the difference."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "John S."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Trust bar",
+      "category": "Storytelling",
+      "blocks": [
+        { "type": "testimonial", "settings": { "quote": "The perfect kombucha.", "author": "David S." } },
+        { "type": "testimonial", "settings": { "quote": "One shot, all the difference.", "author": "John S." } },
+        { "type": "testimonial", "settings": { "quote": "My skin is glowing.", "author": "Mike D." } },
+        { "type": "testimonial", "settings": { "quote": "I finally sleep through the night.", "author": "Sarah L." } },
+        { "type": "testimonial", "settings": { "quote": "Honey like nothing else.", "author": "Ana R." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

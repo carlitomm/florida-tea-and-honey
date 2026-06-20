@@ -1,6 +1,6 @@
 
 
-{% if section.blocks.size > 1 %}
+{% if section.blocks.size > 1 and section.settings.enable_marquee != true %}
   <script
     src="{{ 'announcement-bar.js' | asset_url }}"
     type="module"
@@ -13,29 +13,44 @@
   class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
   style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
 >
-  {% liquid
-    assign autoplay = false
-    assign show_arrows = false
-    if section.blocks.size > 1
-      assign autoplay = true
-      assign show_arrows = true
-    endif
-  %}
+  {% if section.settings.enable_marquee %}
+    {% comment %} KICK-style scrolling marquee — see snippet for details. {% endcomment %}
+    {% liquid
+      assign ann_messages = ''
+      assign lines = section.settings.marquee_messages | newline_to_br | split: '<br />'
+      for line in lines
+        assign t = line | strip_newlines | strip_html | strip
+        if t != blank
+          assign ann_messages = ann_messages | append: t | append: '|||'
+        endif
+      endfor
+    %}
+    {% render 'custom-announcement-marquee', section: section, messages_raw: ann_messages %}
+  {% else %}
+    {% liquid
+      assign autoplay = false
+      assign show_arrows = false
+      if section.blocks.size > 1
+        assign autoplay = true
+        assign show_arrows = true
+      endif
+    %}
 
-  <announcement-bar-component
-    class="announcement-bar__slider"
-    {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
-    {% endif %}
-  >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
+    <announcement-bar-component
+      class="announcement-bar__slider"
+      {% if autoplay == true %}
+        autoplay="{{ section.settings.speed }}" aria-live="polite"
+      {% endif %}
+    >
+      {% if show_arrows %}
+        {% render 'slideshow-arrows', icon_style: 'chevron' %}
+      {% endif %}
 
-    <div class="announcement-bar__slides">
-      {% content_for 'blocks' %}
-    </div>
-  </announcement-bar-component>
+      <div class="announcement-bar__slides">
+        {% content_for 'blocks' %}
+      </div>
+    </announcement-bar-component>
+  {% endif %}
 </aside>
 
 {% stylesheet %}
@@ -135,6 +150,70 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Scrolling marquee"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_marquee",
+      "label": "Scroll as marquee (KICK style)",
+      "info": "Continuously scrolls the message(s) across a bold filled bar instead of fading between them.",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "marquee_messages",
+      "label": "Marquee messages",
+      "info": "One message per line. They scroll in sequence, separated by the chosen icon.",
+      "default": "Organic and Natural Products"
+    },
+    {
+      "type": "select",
+      "id": "marquee_separator",
+      "label": "Separator",
+      "options": [
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "lightning", "label": "Lightning bolt" },
+        { "value": "star", "label": "Star" },
+        { "value": "dot", "label": "Dot" }
+      ],
+      "default": "leaf"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Scroll duration (lower = faster)",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "s",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "marquee_gap",
+      "label": "Space around separator",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "marquee_repeat",
+      "label": "Message repeats",
+      "info": "How many times the message set repeats across the bar. Raise if the bar looks empty on wide screens.",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Slideshow (when marquee is off)"
+    },
     {
       "type": "range",
       "id": "speed",

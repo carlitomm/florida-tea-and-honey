@@ -28,6 +28,28 @@
         "color_scheme": "scheme-2"
       }
     },
+    "trust_bar_kick": {
+      "type": "custom-trust-bar",
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "quote": "The perfect kombucha.", "author": "David S." } },
+        "t2": { "type": "testimonial", "settings": { "quote": "One shot, all the difference.", "author": "John S." } },
+        "t3": { "type": "testimonial", "settings": { "quote": "My skin is glowing.", "author": "Mike D." } },
+        "t4": { "type": "testimonial", "settings": { "quote": "I finally sleep through the night.", "author": "Sarah L." } },
+        "t5": { "type": "testimonial", "settings": { "quote": "Honey like nothing else.", "author": "Ana R." } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5"],
+      "settings": {
+        "lead_label": "Trusted by",
+        "highlight_text": "24k Customers",
+        "scroll_speed": 40,
+        "item_gap": 48,
+        "text_size": 16,
+        "section_width": "page-width",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 16,
+        "padding-block-end": 16
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -1476,6 +1498,7 @@
   "order": [
     "collection_cards_kick",
     "hero_jVaWmY",
+    "trust_bar_kick",
     "product_list_fa6P9H",
     "section_irQYih",
     "product_list_HAAG3E",
