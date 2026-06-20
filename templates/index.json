@@ -12,12 +12,41 @@
     "collection_cards_kick": {
       "type": "custom-collection-cards",
       "blocks": {
-        "card_1": { "type": "card", "settings": { "heading": "Explore New Tastes" } },
-        "card_2": { "type": "card", "settings": { "heading": "Best Sellers" } },
-        "card_3": { "type": "card", "settings": { "heading": "Honey & Cacao" } }
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/infused-lavender-honey.webp",
+            "heading": "Honey",
+            "subheading": "",
+            "link": "shopify://collections/honey"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/17b4be_e94db9ef5cbb425593bf45324285598c_mv2.webp",
+            "heading": "Cacao",
+            "subheading": "",
+            "link": ""
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/tea-for_breathing-system.webp",
+            "heading": "Honey & Cacao",
+            "subheading": "",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["card_1", "card_2", "card_3"],
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3"
+      ],
       "settings": {
+        "heading": "",
         "columns": 3,
         "mobile_columns": "1",
         "card_height": 260,
@@ -25,29 +54,9 @@
         "corner_radius": 16,
         "overlay_opacity": 45,
         "section_width": "page-width",
-        "color_scheme": "scheme-2"
-      }
-    },
-    "trust_bar_kick": {
-      "type": "custom-trust-bar",
-      "blocks": {
-        "t1": { "type": "testimonial", "settings": { "quote": "The perfect kombucha.", "author": "David S." } },
-        "t2": { "type": "testimonial", "settings": { "quote": "One shot, all the difference.", "author": "John S." } },
-        "t3": { "type": "testimonial", "settings": { "quote": "My skin is glowing.", "author": "Mike D." } },
-        "t4": { "type": "testimonial", "settings": { "quote": "I finally sleep through the night.", "author": "Sarah L." } },
-        "t5": { "type": "testimonial", "settings": { "quote": "Honey like nothing else.", "author": "Ana R." } }
-      },
-      "block_order": ["t1", "t2", "t3", "t4", "t5"],
-      "settings": {
-        "lead_label": "Trusted by",
-        "highlight_text": "24k Customers",
-        "scroll_speed": 40,
-        "item_gap": 48,
-        "text_size": 16,
-        "section_width": "page-width",
         "color_scheme": "scheme-2",
-        "padding-block-start": 16,
-        "padding-block-end": 16
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     },
     "hero_jVaWmY": {
@@ -179,6 +188,49 @@
         "reflection_opacity": 75,
         "padding-block-start": 72,
         "padding-block-end": 72
+      }
+    },
+    "trust_bar_kick": {
+      "type": "custom-trust-bar",
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The perfect Tea.",
+            "author": ""
+          }
+        },
+        "t3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Cacao Ceremonial Grade",
+            "author": ""
+          }
+        },
+        "t5": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Honey like nothing else.",
+            "author": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t3",
+        "t5"
+      ],
+      "settings": {
+        "lead_label": "Trusted by",
+        "highlight_text": "Customers",
+        "highlight_link": "",
+        "scroll_speed": 40,
+        "item_gap": 48,
+        "text_size": 16,
+        "section_width": "page-width",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 16,
+        "padding-block-end": 16
       }
     },
     "product_list_fa6P9H": {
