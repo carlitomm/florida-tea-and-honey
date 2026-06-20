@@ -123,7 +123,7 @@
                 "text": "<h2>Join our email list</h2>",
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "left",
+                "alignment": "center",
                 "type_preset": "h3",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
@@ -182,7 +182,7 @@
       "settings": {
         "section_width": "page-width",
         "gap": 20,
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
         "padding-block-start": 12,
         "padding-block-end": 30
       }
@@ -217,7 +217,7 @@
         "section_width": "page-width",
         "gap": 21,
         "divider_thickness": 0,
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
         "padding-block-start": 16,
         "padding-block-end": 11
       }
