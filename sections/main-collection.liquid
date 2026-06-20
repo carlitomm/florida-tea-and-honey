@@ -42,6 +42,10 @@
       results_size: collection.products_count
     %}
 
+    {% comment %} Custom KICK/Loka-style toolbar (Filter + count + search + sort).
+       Hides the default horizontal facets bar via CSS; reuses #filters-drawer. {% endcomment %}
+    {% render 'custom-collection-toolbar', collection: collection, section: section %}
+
     {% assign products_per_page = 24 %}
 
     {% if section.settings.enable_infinite_scroll == false %}

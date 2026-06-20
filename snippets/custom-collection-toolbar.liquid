@@ -1,0 +1,279 @@
+{% comment %}
+  custom-collection-toolbar.liquid
+  ----------------------------------------------------------------------------
+  KICK / "Loka"-inspired collection toolbar for Florida Tea and Honey.
+
+  Renders a single horizontal bar above the product grid:
+    [ Filter ]   N products   [ search (accent) ]   Sort by: [ select ]
+
+  How it works:
+    - The "Filter" button opens the theme's EXISTING facets drawer
+      (#filters-drawer, rendered by blocks/filters.liquid) via Horizon's global
+      `on:click` delegation. It reuses whatever filters the collection has
+      (Availability, Price, …) — nothing is duplicated.
+    - The accent search box submits to /search (catalog product search).
+    - "Sort by" is a native select that reloads the page with ?sort_by=…,
+      preserving any active filter params in the URL.
+    - The CSS here HIDES Horizon's default horizontal facets bar on collection
+      pages; the side drawer is kept intact. Colors come from the theme color
+      scheme (--color-primary accent + the primary .button colors), never
+      hard-coded.
+
+  Rendered from: sections/main-collection.liquid (right after the `filters`
+  block). To revert: remove the {% render 'custom-collection-toolbar' %} call
+  in that section and delete this file.
+{% endcomment %}
+
+{%- liquid
+  assign count = collection.products_count
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+
+  assign active_filters = 0
+  for f in collection.filters
+    if f.type == 'price_range'
+      if f.min_value.value != null or f.max_value.value != null
+        assign active_filters = active_filters | plus: 1
+      endif
+    else
+      assign active_filters = active_filters | plus: f.active_values.size
+    endif
+  endfor
+-%}
+
+<div class="custom-collection-toolbar">
+  {%- comment -%} Filter — opens the theme's existing #filters-drawer {%- endcomment -%}
+  <button
+    type="button"
+    class="button custom-toolbar__filter"
+    on:click="#filters-drawer/showDialog"
+    aria-haspopup="dialog"
+  >
+    <span class="svg-wrapper custom-toolbar__filter-icon">
+      {{- 'icon-filter.svg' | inline_asset_content -}}
+    </span>
+    <span>Filter</span>
+    {%- if active_filters > 0 -%}
+      <span class="custom-toolbar__bubble" aria-hidden="true">{{ active_filters }}</span>
+    {%- endif -%}
+  </button>
+
+  <span class="custom-toolbar__count">
+    {{ count }} {% if count == 1 %}product{% else %}products{% endif %}
+  </span>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="custom-toolbar__search">
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[prefix]" value="last">
+    <span class="custom-toolbar__search-icon svg-wrapper" aria-hidden="true">
+      {{- 'icon-search.svg' | inline_asset_content -}}
+    </span>
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="Search"
+      class="custom-toolbar__search-input"
+      autocomplete="off"
+      aria-label="Search"
+    >
+  </form>
+
+  <div class="custom-toolbar__sort">
+    <label for="CustomSort-{{ section.id }}" class="custom-toolbar__sort-label">
+      Sort by:
+    </label>
+    <div class="custom-toolbar__select-wrap">
+      <select id="CustomSort-{{ section.id }}" class="custom-toolbar__select">
+        {%- for option in collection.sort_options -%}
+          <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
+            {{- option.name -}}
+          </option>
+        {%- endfor -%}
+      </select>
+      <span class="custom-toolbar__caret svg-wrapper" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var sel = document.getElementById('CustomSort-{{ section.id }}');
+    if (!sel || sel.dataset.bound) return;
+    sel.dataset.bound = '1';
+    sel.addEventListener('change', function () {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sel.value);
+      url.searchParams.delete('page');
+      window.location.href = url.toString();
+    });
+  })();
+</script>
+
+<style>
+  /* --- Hide Horizon's default horizontal facets bar on collection pages.
+     The side drawer (#filters-drawer, .facets-block-wrapper--vertical) is kept
+     so the custom Filter button can open it. --- */
+  .product-grid-container .facets.facets--horizontal.facets-controls-wrapper,
+  .product-grid-container .facets-block-wrapper--horizontal,
+  .product-grid-container .facets-toggle {
+    display: none !important;
+  }
+
+  /* --- Custom toolbar --- */
+  .custom-collection-toolbar {
+    grid-column: var(--centered);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md, 1rem);
+    flex-wrap: wrap;
+    margin-block: var(--margin-md, 1rem) var(--margin-lg, 1.5rem);
+  }
+
+  /* Filter pill (uses the theme primary .button colors = brand accent) */
+  .custom-toolbar__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .custom-toolbar__filter-icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .custom-toolbar__bubble {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding-inline: 0.35rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1;
+    background: rgb(var(--color-foreground-rgb) / 0.18);
+    color: inherit;
+  }
+
+  .custom-toolbar__count {
+    flex-shrink: 0;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    font-size: var(--font-paragraph--size, 1rem);
+  }
+
+  /* Accent search box */
+  .custom-toolbar__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 280px;
+    min-width: 200px;
+    background: var(--color-background);
+    border: 2px solid var(--color-primary);
+    border-radius: 999px;
+    padding-inline: 1rem;
+    height: 3rem;
+  }
+
+  .custom-toolbar__search-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--color-primary);
+  }
+
+  .custom-toolbar__search-icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .custom-toolbar__search-input {
+    flex: 1 1 auto;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-foreground);
+    font-size: var(--font-paragraph--size, 1rem);
+    padding-inline-start: 0.6rem;
+    min-width: 0;
+  }
+
+  .custom-toolbar__search-input::placeholder {
+    color: rgb(var(--color-foreground-rgb) / 0.5);
+  }
+
+  /* Sort by */
+  .custom-toolbar__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
+
+  .custom-toolbar__sort-label {
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    white-space: nowrap;
+  }
+
+  .custom-toolbar__select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .custom-toolbar__select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--color-background);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.28);
+    border-radius: 999px;
+    color: var(--color-foreground);
+    font-size: var(--font-paragraph--size, 1rem);
+    padding: 0.6rem 2.4rem 0.6rem 1rem;
+    cursor: pointer;
+  }
+
+  .custom-toolbar__caret {
+    position: absolute;
+    inset-inline-end: 0.9rem;
+    pointer-events: none;
+    display: inline-flex;
+    color: rgb(var(--color-foreground-rgb) / 0.6);
+  }
+
+  .custom-toolbar__caret svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  /* Mobile layout:
+       row 1: [Filter] ............... [Sort by]
+       row 2: N products
+       row 3: [========= search =========] */
+  @media screen and (max-width: 749px) {
+    .custom-collection-toolbar {
+      gap: 0.75rem;
+    }
+
+    .custom-toolbar__filter {
+      order: 1;
+    }
+
+    .custom-toolbar__sort {
+      order: 2;
+    }
+
+    .custom-toolbar__count {
+      order: 3;
+      width: 100%;
+    }
+
+    .custom-toolbar__search {
+      order: 4;
+      flex-basis: 100%;
+    }
+  }
+</style>
