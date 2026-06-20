@@ -41,4 +41,24 @@
   .product-details .group-block:has(.price) .compare-at-price {
     font-size: 0.55em;
   }
+
+  /* Top-align the details column with the image (don't center vertically). */
+  @media screen and (min-width: 750px) {
+    .product-information__grid--half .product-details,
+    .product-information__grid--half .product-details > .group-block,
+    .product-information__grid--half .product-details .group-block-content.layout-panel-flex {
+      align-self: start;
+      justify-content: flex-start;
+    }
+  }
+
+  /* Selected variant swatch/option uses the accent color (not black). */
+  .product-details variant-picker {
+    --color-selected-variant-background: var(--color-primary);
+    --color-selected-variant-text: var(--color-primary-button-text, rgb(var(--color-background-rgb)));
+    --color-selected-variant-border: var(--color-primary);
+    --color-selected-variant-hover-background: var(--color-primary-hover, var(--color-primary));
+    --color-selected-variant-hover-text: var(--color-primary-button-text, rgb(var(--color-background-rgb)));
+    --color-selected-variant-hover-border: var(--color-primary-hover, var(--color-primary));
+  }
 {% endstyle %}
