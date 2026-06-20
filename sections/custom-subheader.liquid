@@ -6,12 +6,14 @@
   "About Us" link on the right.
 
   Notes:
-    - The language selector is Shopify's NATIVE localization form
-      (`snippets/localization-form.liquid`, `show_language: true`). We do not
-      reinvent it — it lists `localization.available_languages` and submits the
-      built-in `localization` form. Requires the languages to be published in
-      Shopify admin (Settings → Languages / Translate & Adapt).
-    - Colors come from the chosen theme Color scheme, never hard-coded.
+    - The language selector uses Shopify's NATIVE localization form
+      (`{% form 'localization' %}`): each option is a real submit button with
+      `name="language_code"`, so switching language is Shopify's own mechanism —
+      we only restyle the UI into a themed popover (instead of the OS-native
+      <select> dropdown, which can't be styled). Requires 2+ published languages
+      (Settings → Languages / Translate & Adapt).
+    - Colors come from theme Color schemes, never hard-coded. The popover panel
+      uses the theme's popover color scheme.
 
   Placement: added to `sections/header-group.json` order, between
   `header_announcements_*` and `header_section`.
@@ -31,13 +33,41 @@
   <div class="custom-subheader__inner">
     <div class="custom-subheader__side custom-subheader__side--start">
       {%- if show_language -%}
-        <div class="custom-subheader__lang">
-          {% render 'localization-form',
-            show_country: false,
-            show_language: true,
-            localization_style: 'subheader',
-            form_id: section.id
-          %}
+        <div class="custom-lang" id="CustomLang-{{ section.id }}">
+          {%- form 'localization', return_to: request.path, class: 'custom-lang__form' -%}
+            <button
+              type="button"
+              class="custom-lang__toggle"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span>{{ localization.language.endonym_name | capitalize }}</span>
+              <span class="svg-wrapper custom-lang__caret">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </button>
+
+            <div class="custom-lang__panel color-{{ settings.popover_color_scheme }}" hidden>
+              <ul class="custom-lang__list" role="list">
+                {%- for language in localization.available_languages -%}
+                  <li>
+                    <button
+                      type="submit"
+                      name="language_code"
+                      value="{{ language.iso_code }}"
+                      class="custom-lang__item{% if language.iso_code == localization.language.iso_code %} is-current{% endif %}"
+                      {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}
+                    >
+                      <span class="svg-wrapper custom-lang__check">
+                        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                      </span>
+                      <span>{{ language.endonym_name | capitalize }}</span>
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endform -%}
         </div>
       {%- endif -%}
     </div>
@@ -90,31 +120,103 @@
     text-underline-offset: 0.2em;
   }
 
-  /* Compact the native language selector to fit a thin strip */
-  .custom-subheader .language-selector {
-    padding: 0;
-    width: auto;
-    gap: var(--gap-2xs, 0.25rem);
+  /* --- Language dropdown (themed popover, not the OS-native <select>) --- */
+  .custom-lang {
+    position: relative;
   }
 
-  .custom-subheader .localization-form__select {
-    background-color: transparent;
+  .custom-lang__form {
+    margin: 0;
+  }
+
+  .custom-lang__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.1rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
     color: var(--color-foreground);
     font-size: var(--font-size-sm, 0.9rem);
-    padding-block: 0.15rem;
-    padding-inline: 0.15rem calc(var(--icon-size-xs) + 0.35rem);
-    text-align: start;
-    max-width: none;
+    letter-spacing: 0.02em;
   }
 
-  .custom-subheader .localization-form__select option {
-    color: var(--color-input-text);
-    background-color: var(--color-background);
+  .custom-lang__caret svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    transition: transform 0.18s ease;
   }
 
-  .custom-subheader .language-selector .svg-wrapper.icon-caret {
-    right: 0;
+  .custom-lang__toggle[aria-expanded='true'] .custom-lang__caret svg {
+    transform: rotate(180deg);
+  }
+
+  .custom-lang__panel {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(100% + 0.4rem);
+    z-index: 80;
+    min-width: 180px;
+    padding: 0.4rem;
+    border-radius: 12px;
+    background: var(--color-background);
     color: var(--color-foreground);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .custom-lang__panel[hidden] {
+    display: none;
+  }
+
+  .custom-lang__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .custom-lang__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    text-align: start;
+    color: var(--color-foreground);
+    font-size: var(--font-size-sm, 0.9rem);
+    transition: background-color 0.15s ease;
+  }
+
+  .custom-lang__item:hover,
+  .custom-lang__item:focus-visible {
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .custom-lang__check {
+    display: inline-flex;
+    visibility: hidden;
+    color: var(--color-primary);
+  }
+
+  .custom-lang__check svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .custom-lang__item.is-current {
+    font-weight: 500;
+  }
+
+  .custom-lang__item.is-current .custom-lang__check {
+    visibility: visible;
   }
 
   @media screen and (max-width: 749px) {
@@ -123,11 +225,48 @@
     }
 
     .custom-subheader__link,
-    .custom-subheader .localization-form__select {
+    .custom-lang__toggle {
       font-size: var(--font-size-xs, 0.8rem);
     }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initLangDropdown(root) {
+      if (!root || root.dataset.bound) return;
+      root.dataset.bound = '1';
+      var toggle = root.querySelector('.custom-lang__toggle');
+      var panel = root.querySelector('.custom-lang__panel');
+      if (!toggle || !panel) return;
+
+      function close() {
+        panel.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function open() {
+        panel.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+
+      toggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        if (panel.hidden) open();
+        else close();
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!root.contains(event.target)) close();
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') close();
+      });
+    }
+
+    document.querySelectorAll('.custom-lang').forEach(initLangDropdown);
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
