@@ -52,7 +52,7 @@
       "settings": {
         "color_scheme": "scheme-32f3734d-5d6c-4122-8223-f9f53a9caff1",
         "background_style": "gradient",
-        "gradient_direction": "to right",
+        "gradient_direction": "to bottom",
         "menu": "main-menu"
       }
     },

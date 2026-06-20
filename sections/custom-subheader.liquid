@@ -310,12 +310,13 @@
       "id": "gradient_direction",
       "label": "Gradient direction",
       "options": [
+        { "value": "to bottom", "label": "Top → bottom (vertical)" },
+        { "value": "to top", "label": "Bottom → top (vertical)" },
         { "value": "to right", "label": "Left → right" },
         { "value": "to left", "label": "Right → left" },
-        { "value": "135deg", "label": "Diagonal" },
-        { "value": "to bottom", "label": "Top → bottom" }
+        { "value": "135deg", "label": "Diagonal" }
       ],
-      "default": "to right",
+      "default": "to bottom",
       "visible_if": "{{ section.settings.background_style == 'gradient' }}"
     },
     {
