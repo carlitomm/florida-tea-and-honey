@@ -233,6 +233,26 @@
         "padding-block-end": 16
       }
     },
+    "featured_bento_kick": {
+      "type": "custom-featured-bento",
+      "blocks": {
+        "b1": { "type": "card", "settings": { "heading": "Sets", "subheading": "Handpicked combos to sample your favorites." } },
+        "b2": { "type": "card", "settings": { "heading": "Honey" } },
+        "b3": { "type": "card", "settings": { "heading": "Cacao" } },
+        "b4": { "type": "card", "settings": { "heading": "Teas", "subheading": "Organic loose leaf, crafted by locals." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": {
+        "row_height": 240,
+        "cards_gap": 16,
+        "corner_radius": 16,
+        "section_width": "page-width",
+        "color_scheme": "scheme-1",
+        "card_color_scheme": "scheme-1",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -1551,6 +1571,7 @@
     "collection_cards_kick",
     "hero_jVaWmY",
     "trust_bar_kick",
+    "featured_bento_kick",
     "product_list_fa6P9H",
     "section_irQYih",
     "product_list_HAAG3E",
